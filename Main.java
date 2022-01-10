@@ -1,23 +1,79 @@
-import java.util.HashSet;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Scanner;
 
 public class Main {
     public static final int HOW_MUCH = 13;
 
     public static void main(String[] args) {
-        GenerateVideo generateVideo = new GenerateVideo();
-        generateVideo.generateRandomId();
-        Message.VIDEO_CRIP.sendMessage();
-        generateSampleVideo();
-    }
+        HashMap<String, VideoInfo> idLinkedVideoInfo = new LinkedHashMap<>();
+        VideoEditor videoEditor = new VideoEditor();
 
-    public static void generateSampleVideo() {
-        for (int i = 1; i <= HOW_MUCH; i++) {
-            String title = "제목" + i;
-            int playTime = (int)(Math.random() * 15) + 1;
+        Message.VIDEO_CLIP___.printMessage(); // ---영상클립--- 메세지
+        generateSampleVideo(idLinkedVideoInfo);
 
-            VideoInfo videoInfo = new VideoInfo(title, playTime, null);
-            videoInfo.printViedoInfo();
+        Scanner sc = new Scanner(System.in);
+
+        while (true) {
+            Message.VIEW_CONSOLE.printMessageWithoutLineBreak(); // 콘솔창 > 표시
+            String commandLine = sc.nextLine();
+            String[] commandArr = commandLine.split(" ");
+            String command = commandArr[0];
+            String id = "";
+
+            if (command.equals("add")) {
+                id = commandArr[1];
+                if (idLinkedVideoInfo.containsKey(id)) {
+                    videoEditor.addDataLast(new LinkedListElement(idLinkedVideoInfo.get(id), null));
+                }
+
+                Message.VIEW_CONSOLE.printMessageVideoEditorInfo(videoEditor);
+                continue;
+            }
+
+            if (command.equals("insert")) {
+                id = commandArr[1];
+                int point = Integer.parseInt(commandArr[2]);
+
+                if (idLinkedVideoInfo.containsKey(id)) {
+                    videoEditor.addDataToPoint(new LinkedListElement(idLinkedVideoInfo.get(id), null), point);
+                }
+
+                Message.VIEW_CONSOLE.printMessageVideoEditorInfo(videoEditor);
+                continue;
+            }
+
+            if (command.equals("delete")) {
+                id = commandArr[1];
+                videoEditor.deleteData(id);
+                Message.VIEW_CONSOLE.printMessageVideoEditorInfo(videoEditor);
+                continue;
+            }
+
+            if (command.equals("render")) {
+                Message.VIDEO_CLIP.printMessageWithClipSize(videoEditor.getLinkedSize());
+                Message.TOTAL_VIDEO_LEN.printMessageWithTotalVideoLen(videoEditor.getTotalPlayTime());
+                continue;
+            }
+
+            if (command.equals("exit")) {
+                Message.END.printMessage();
+                break;
+            }
         }
     }
 
+    public static void generateSampleVideo(HashMap<String, VideoInfo> idLinkedVideoInfo) {
+        GenerateId generateId = new GenerateId();
+
+        for (int i = 1; i <= HOW_MUCH; i++) {
+            String title = Message.TITLE_NAME.getMessage() + i;
+            int playTime = (int)(Math.random() * 15) + 1;
+
+            VideoInfo videoInfo = new VideoInfo(title, playTime, null, generateId);
+            idLinkedVideoInfo.put(videoInfo.getId(), videoInfo);
+        }
+
+        Message.VIEW_CONSOLE.printViedoInfo(idLinkedVideoInfo);
+    }
 }
