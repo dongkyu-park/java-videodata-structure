@@ -62,8 +62,9 @@ public class VideoEditor {
             return;
         }
 
-        LinkedListElement nextElement = this.startElement;
         LinkedListElement prevElement = null;
+        // --> newElement가 0번째 point로 추가될 때로 초기화
+        LinkedListElement nextElement = this.startElement;
 
         for (int i = 0; i < point; i++) {
             prevElement = nextElement;
@@ -91,7 +92,7 @@ public class VideoEditor {
 
         for (int i = 0; i < this.linkedSize; i++) {
             if (nowElement.getVideoData().getId().equals(selectedVideoId)) {
-                if (prevElement == null) {
+                if (prevElement == null) { // 첫번째 요소 삭제 체크
                     this.startElement = nowElement.getMyNext();
                     this.totalPlayTime -= nowElement.getVideoData().getPlayTime();
                     this.linkedSize--;
@@ -103,7 +104,7 @@ public class VideoEditor {
                 this.totalPlayTime -= nowElement.getVideoData().getPlayTime();
                 this.linkedSize--;
 
-                if (nowElement.getMyNext() == null) {
+                if (nowElement.getMyNext() == null) { // 마지막 요소 삭제 체크
                     this.endElement = prevElement;
                 } // 삭제할 요소의 다음 요소가 null인 경우는, 삭제할 요소가 마지막 이라는 의미 이므로
                 // 삭제할 요소의 이전 요소를 마지막 으로 지정
