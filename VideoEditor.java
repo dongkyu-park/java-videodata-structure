@@ -1,85 +1,85 @@
 public class VideoEditor {
-    LinkedListElement startElement;
-    LinkedListElement endElement;
+    Node startNode;
+    Node endNode;
     int totalPlayTime;
     int linkedSize;
 
     public VideoEditor() {
-        this.startElement = null;
-        this.endElement = null;
+        this.startNode = null;
+        this.endNode = null;
         this.totalPlayTime = 0;
         this.linkedSize = 0;
     }
 
-    public void addDataLast(LinkedListElement newElement) { // add logic
+    public void addDataLast(Node newNode) { // add logic
         if (isEmpty()) {
-            this.startElement = newElement;
-            this.endElement = newElement;
-            this.totalPlayTime += newElement.getVideoData().getPlayTime();
+            this.startNode = newNode;
+            this.endNode = newNode;
+            this.totalPlayTime += newNode.getVideoData().getPlayTime();
             this.linkedSize++;
             return;
         }
 
-        this.endElement.setMyNext(newElement);
-        this.endElement = newElement;
-        this.totalPlayTime += newElement.getVideoData().getPlayTime();
+        this.endNode.setNextNode(newNode);
+        this.endNode = newNode;
+        this.totalPlayTime += newNode.getVideoData().getPlayTime();
         this.linkedSize++;
     }
 
-    public void addDataFirst(LinkedListElement newElement) {
+    public void addDataFirst(Node newNode) {
         if (isEmpty()) {
-            this.startElement = newElement;
-            this.endElement = newElement;
-            this.totalPlayTime += newElement.getVideoData().getPlayTime();
+            this.startNode = newNode;
+            this.endNode = newNode;
+            this.totalPlayTime += newNode.getVideoData().getPlayTime();
             this.linkedSize++;
             return;
         }
 
-        this.startElement.setMyNext(newElement);
-        this.startElement = newElement;
-        this.totalPlayTime += newElement.getVideoData().getPlayTime();
+        this.startNode.setNextNode(newNode);
+        this.startNode = newNode;
+        this.totalPlayTime += newNode.getVideoData().getPlayTime();
         this.linkedSize++;
     }
 
-    public void addDataToPoint(LinkedListElement newElement, int point) { // insert logic
+    public void addDataToPoint(Node newNode, int point) { // insert logic
         if (point < 0) {
             Message.ERROR_ILLEGAL_VALUE.printMessage();
             return;
         }
 
         if (isEmpty()) {
-            addDataFirst(newElement);
+            addDataFirst(newNode);
             return;
         }
 
         if (this.linkedSize <= point) { // 순서값이 현재 링크드 리스트의 갯수보다 같거나 큰 경우
-            addDataLast(newElement);
+            addDataLast(newNode);
             return;
         }
 
         if (point == 0) { // 순서값이 0인 경우 첫번째 데이터로 추가
-            addDataFirst(newElement);
+            addDataFirst(newNode);
             return;
         }
 
-        LinkedListElement prevElement = null;
-        // --> newElement가 0번째 point로 추가될 때로 초기화
-        LinkedListElement nextElement = this.startElement;
+        Node prevNode = null;
+        // --> newNode가 0번째 point로 추가될 때로 초기화
+        Node nextNode = this.startNode;
 
         for (int i = 0; i < point; i++) {
-            prevElement = nextElement;
-            nextElement = prevElement.getMyNext();
+            prevNode = nextNode;
+            nextNode = prevNode.getNextNode();
         }
 
-        newElement.setMyNext(nextElement);
-        prevElement.setMyNext(newElement);
-        this.totalPlayTime += newElement.getVideoData().getPlayTime();
+        newNode.setNextNode(nextNode);
+        prevNode.setNextNode(newNode);
+        this.totalPlayTime += newNode.getVideoData().getPlayTime();
         this.linkedSize++;
 
-        if (nextElement == null) {
-            this.endElement = newElement;
-        } // nextData가 null인 경우는, 데이터를 추가한 point가 마지막 데이터 라는 의미이므로
-        // 추가한 데이터를 마지막 데이터로 지정
+        if (nextNode == null) {
+            this.endNode = newNode;
+        } // nextNode가 null인 경우는, 노드를 추가한 point가 마지막 노드 라는 의미이므로
+        // 추가한 노드를 마지막 노드로 지정
     }
 
     public void deleteData(String selectedVideoId) { // delete logic
@@ -87,47 +87,47 @@ public class VideoEditor {
             return;
         }
 
-        LinkedListElement nowElement = this.startElement;
-        LinkedListElement prevElement = null;
+        Node currentNode = this.startNode;
+        Node prevNode = null;
 
         for (int i = 0; i < this.linkedSize; i++) {
-            if (nowElement.getVideoData().getId().equals(selectedVideoId)) {
-                if (prevElement == null) { // 첫번째 요소 삭제 체크
-                    this.startElement = nowElement.getMyNext();
-                    this.totalPlayTime -= nowElement.getVideoData().getPlayTime();
+            if (currentNode.getVideoData().getId().equals(selectedVideoId)) {
+                if (prevNode == null) { // 첫번째 노드 삭제 체크
+                    this.startNode = currentNode.getNextNode();
+                    this.totalPlayTime -= currentNode.getVideoData().getPlayTime();
                     this.linkedSize--;
                     break;
-                } // 이전 요소가 null인 경우는, 탐색을 시작한 요소가 첫번째 라는 의미이므로
-                // 삭제할 요소의 다음 요소를 첫번째 로 지정
+                } // 이전 노드가 null인 경우는, 탐색을 시작한 노드가 첫번째 라는 의미이므로
+                // 삭제할 노드의 다음 노드를 첫번째 로 지정
 
-                prevElement.setMyNext(nowElement.getMyNext());
-                this.totalPlayTime -= nowElement.getVideoData().getPlayTime();
+                prevNode.setNextNode(currentNode.getNextNode());
+                this.totalPlayTime -= currentNode.getVideoData().getPlayTime();
                 this.linkedSize--;
 
-                if (nowElement.getMyNext() == null) { // 마지막 요소 삭제 체크
-                    this.endElement = prevElement;
-                } // 삭제할 요소의 다음 요소가 null인 경우는, 삭제할 요소가 마지막 이라는 의미 이므로
-                // 삭제할 요소의 이전 요소를 마지막 으로 지정
+                if (currentNode.getNextNode() == null) { // 마지막 노드 삭제 체크
+                    this.endNode = prevNode;
+                } // 삭제할 노드의 다음 노드가 null인 경우는, 삭제할 노드가 마지막 이라는 의미 이므로
+                // 삭제할 노드의 이전 노드를 마지막 으로 지정
 
-                nowElement = null;
+                currentNode = null;
                 break;
             }
 
-            prevElement = nowElement;
-            nowElement = prevElement.getMyNext();
+            prevNode = currentNode;
+            currentNode = prevNode.getNextNode();
         }
     }
 
     private boolean isEmpty() {
-        if (this.startElement == null) {
+        if (this.startNode == null) {
             return true;
         }
 
         return false;
     }
 
-    public LinkedListElement getStartElement() {
-        return startElement;
+    public Node getStartNode() {
+        return startNode;
     }
 
     public int getTotalPlayTime() {

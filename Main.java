@@ -3,14 +3,16 @@ import java.util.LinkedHashMap;
 import java.util.Scanner;
 
 public class Main {
-    public static final int HOW_MUCH = 13;
+    private static final int HOW_MUCH = 13;
+    private static final int MIN_PLAY_TIME = 1;
+    private static final int MAX_PLAY_TIME = 15;
 
     public static void main(String[] args) {
-        HashMap<String, VideoInfo> idLinkedVideoInfo = new LinkedHashMap<>();
+        HashMap<String, VideoInfo> idLinkedVideoMap = new LinkedHashMap<>();
         VideoEditor videoEditor = new VideoEditor();
 
         Message.VIDEO_CLIP___.printMessage(); // ---영상클립--- 메세지
-        generateSampleVideo(idLinkedVideoInfo);
+        generateSampleVideo(idLinkedVideoMap);
 
         Scanner sc = new Scanner(System.in);
 
@@ -23,8 +25,8 @@ public class Main {
 
             if (command.equals("add")) {
                 id = commandArr[1];
-                if (idLinkedVideoInfo.containsKey(id)) {
-                    videoEditor.addDataLast(new LinkedListElement(idLinkedVideoInfo.get(id), null));
+                if (idLinkedVideoMap.containsKey(id)) {
+                    videoEditor.addDataLast(new Node(idLinkedVideoMap.get(id)));
                 }
 
                 Message.VIEW_CONSOLE.printMessageVideoEditorInfo(videoEditor);
@@ -35,8 +37,8 @@ public class Main {
                 id = commandArr[1];
                 int point = Integer.parseInt(commandArr[2]);
 
-                if (idLinkedVideoInfo.containsKey(id)) {
-                    videoEditor.addDataToPoint(new LinkedListElement(idLinkedVideoInfo.get(id), null), point);
+                if (idLinkedVideoMap.containsKey(id)) {
+                    videoEditor.addDataToPoint(new Node(idLinkedVideoMap.get(id)), point);
                 }
 
                 Message.VIEW_CONSOLE.printMessageVideoEditorInfo(videoEditor);
@@ -68,9 +70,9 @@ public class Main {
 
         for (int i = 1; i <= HOW_MUCH; i++) {
             String title = Message.TITLE_NAME.getMessage() + i;
-            int playTime = (int)(Math.random() * 15) + 1;
+            int playTime = (int)(Math.random() * MAX_PLAY_TIME) + MIN_PLAY_TIME;
 
-            VideoInfo videoInfo = new VideoInfo(title, playTime, null, generateId);
+            VideoInfo videoInfo = new VideoInfo(title, playTime, generateId);
             idLinkedVideoInfo.put(videoInfo.getId(), videoInfo);
         }
 

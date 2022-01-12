@@ -28,10 +28,10 @@ public enum Message {
 
     public void printMessageVideoEditorInfo(VideoEditor videoEditor) {
         System.out.print("|");
-        LinkedListElement element = videoEditor.getStartElement();
-        while (element != null) {
-            System.out.print("---[" + element.getVideoData().getId() + ", " + element.getVideoData().getPlayTime() + "sec]");
-            element = element.getMyNext();
+        Node node = videoEditor.getStartNode();
+        while (node != null) {
+            System.out.print("---[" + node.getVideoData().getId() + ", " + node.getVideoData().getPlayTime() + "sec]");
+            node = node.getNextNode();
         }
         System.out.println("---[end]");
     }

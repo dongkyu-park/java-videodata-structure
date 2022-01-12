@@ -2,13 +2,13 @@ public class VideoInfo {
     String id;
     String title;
     int playTime;
-    LinkedListElement nextElement;
+    Node nextNode;
 
-    public VideoInfo(String title, int playTime, LinkedListElement nextElement, GenerateId generateId) {
+    public VideoInfo(String title, int playTime, GenerateId generateId) {
         this.id = generateId.generateRandomId();
         this.title = title;
         this.playTime = playTime;
-        this.nextElement = nextElement;
+        this.nextNode = null;
     }
 
     public void printViedoInfo() {
@@ -23,11 +23,11 @@ public class VideoInfo {
         return playTime;
     }
 
-    public LinkedListElement getNextElement() {
-        return nextElement;
+    public Node getNextNode() {
+        return nextNode;
     }
 
-    public void setNextElement(LinkedListElement nextElement) {
-        this.nextElement = nextElement;
+    public void setNextNode(Node nextNode) {
+        this.nextNode = nextNode;
     }
 }
