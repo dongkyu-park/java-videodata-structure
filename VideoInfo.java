@@ -4,8 +4,8 @@ public class VideoInfo {
     int playTime;
     Node nextNode;
 
-    public VideoInfo(String title, int playTime, GenerateId generateId) {
-        this.id = generateId.generateRandomId();
+    public VideoInfo(String title, int playTime, idManager idManager) {
+        this.id = idManager.generateRandomId();
         this.title = title;
         this.playTime = playTime;
         this.nextNode = null;

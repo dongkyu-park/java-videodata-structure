@@ -66,13 +66,13 @@ public class Main {
     }
 
     public static void generateSampleVideo(HashMap<String, VideoInfo> idLinkedVideoInfo) {
-        GenerateId generateId = new GenerateId();
+        idManager idManager = new idManager();
 
         for (int i = 1; i <= HOW_MUCH; i++) {
             String title = Message.TITLE_NAME.getMessage() + i;
             int playTime = (int)(Math.random() * MAX_PLAY_TIME) + MIN_PLAY_TIME;
 
-            VideoInfo videoInfo = new VideoInfo(title, playTime, generateId);
+            VideoInfo videoInfo = new VideoInfo(title, playTime, idManager);
             idLinkedVideoInfo.put(videoInfo.getId(), videoInfo);
         }
 

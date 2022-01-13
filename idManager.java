@@ -1,7 +1,7 @@
 import java.util.HashSet;
 import java.util.Iterator;
 
-public class GenerateId {
+public class idManager {
     private static final int ID_LENGTH = 4;
     private static final HashSet<String> idSet = new HashSet<>();
 
